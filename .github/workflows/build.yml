@@ -18,15 +18,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Android APK
-        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        uses: n8marti/buildozer-action@fix-user-doesnt-exist
         with:
+          command: buildozer android debug
           workdir: .
-          buildozer-cmd: android debug
+          buildozer_version: stable
 
       - name: Save APK
         uses: actions/upload-artifact@v4
         with:
           name: Apex-Drift-Grand-Prix-APK
-          path: bin/*.apk
-          if-no-files-found: error
+          path: ${{ steps.buildozer.outputs.filename }}
+          
           
